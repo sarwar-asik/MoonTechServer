@@ -5,11 +5,12 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 const cors = require("cors");
-
 app.use(cors());
 app.use(express.json());
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.q66zrl2.mongodb.net/?retryWrites=true&w=majority`;
+// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.q66zrl2.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb://localhost:27017`;
+
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -30,10 +31,12 @@ const run = async () => {
 
     app.post("/product", async (req, res) => {
       const product = req.body;
-
+      console.log(product);
       const result = await productCollection.insertOne(product);
-
       res.send(result);
+
+      // const addProduct = await productCollection.insertMany(product);
+      // res.send(addProduct);
     });
 
     app.delete("/product/:id", async (req, res) => {
